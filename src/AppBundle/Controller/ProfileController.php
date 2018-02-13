@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ProfileController extends Controller
 {
     /**
-    * @Route("/profile", name="homepage")
+    * @Route("/profile", name="profile")
     */
     public function indexAction()
     {
