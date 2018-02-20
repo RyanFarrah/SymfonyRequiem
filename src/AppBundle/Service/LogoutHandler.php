@@ -29,7 +29,7 @@ class LogoutHandler implements  LogoutSuccessHandlerInterface
             throw new AccessDeniedException();
         }
 
-        $content = $this->template->render("registration/logout.html.twig");
+        $content = $this->template->render("profile/logout.html.twig");
 
         return new Response($content);
 
