@@ -2,8 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Song;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * Song
@@ -13,6 +17,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Song
 {
+
+    public function __construct($audioDirectory) {
+        
+        $audioDirectory = str_replace($_SERVER['DOCUMENT_ROOT'], '', $audioDirectory);
+        
+        $this->audioDirectory = $audioDirectory;
+    }
+
+    private $audioDirectory;
     /**
      * @var int
      *
@@ -67,5 +80,11 @@ class Song
     {
         return $this->audioFile;
     }
+
+    public function getAudioDirectory() 
+    {
+        return $this->audioDirectory;
+    }
+
 }
 

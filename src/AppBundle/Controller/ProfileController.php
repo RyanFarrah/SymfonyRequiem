@@ -17,20 +17,19 @@ class ProfileController extends Controller
      */
     public function newAction(Request $request)
     {
+        $audioDirectory = $this->container->getParameter('audio_directory') . '/';
 
-        $song = new Song();
+        $song = new Song($audioDirectory);
+        $audioDirectory = $song->getAudioDirectory();
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $song->getAudioFile();
-            var_dump($file);
 
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
-            var_dump($fileName);
 
-            // Move the file to the directory where brochures are stored
             $file->move(
                 $this->getParameter('audio_directory'),
                 $fileName
@@ -38,6 +37,16 @@ class ProfileController extends Controller
 
             $song->setAudioFile($fileName);
         }
+
+        ?>
+
+        <audio src="<?=$audioDirectory?>" autoplay>
+        </audio>
+        <!-- 
+         <audio src="/var/www/html/symfony3/web/uploads/audio/d9cb023cd4d566f695c72ea614d39212.mp3" autoplay >
+         </audio>  -->
+         
+         <?php
         
 
         return $this->render('profile/index.html.twig', array(
