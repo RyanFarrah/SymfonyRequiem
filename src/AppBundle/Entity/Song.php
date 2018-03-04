@@ -20,12 +20,9 @@ class Song
 
     public function __construct($audioDirectory) {
         
-        $audioDirectory = str_replace($_SERVER['DOCUMENT_ROOT'], '', $audioDirectory);
-        
-        $this->audioDirectory = $audioDirectory;
+        $this->setAudioDirectory($audioDirectory);
     }
 
-    private $audioDirectory;
     /**
      * @var int
      *
@@ -46,6 +43,17 @@ class Song
      */
     private $audioFile;
 
+    /**
+     *@var string
+     *
+     *@ORM\Column(name="AudioName", type="string", length=255)
+     *@Assert\NotBlank()
+    */
+
+    private $audioName;
+
+    private $audioDirectory;
+
 
     /**
      * Get id
@@ -57,6 +65,18 @@ class Song
         return $this->id;
     }
 
+    public function setAudioDirectory($audioDirectory) {
+
+        $audioDirectory = str_replace($_SERVER['DOCUMENT_ROOT'], '', $audioDirectory);
+        
+        $this->audioDirectory = $audioDirectory;
+    }
+
+    public function getAudioDirectory() 
+    {
+        return $this->audioDirectory;
+    }
+
     /**
      * Set audioFile
      *
@@ -64,27 +84,35 @@ class Song
      *
      * @return Song
      */
-    public function setAudioFile($audioFile)
-    {
-        $this->audioFile = $audioFile;
+     public function setAudioFile($audioFile)
+     {
+         $this->audioFile = $audioFile;
+ 
+         return $this;
+     }
+ 
+     /**
+      * Get audioFile
+      *
+      * @return string
+      */
+     public function getAudioFile()
+     {
+         return $this->audioFile;
+     }
+
+     public function setAudioName($audioName) {
+
+        $this->audioName = $audioName;
 
         return $this;
-    }
 
-    /**
-     * Get audioFile
-     *
-     * @return string
-     */
-    public function getAudioFile()
-    {
-        return $this->audioFile;
-    }
+     }
 
-    public function getAudioDirectory() 
-    {
-        return $this->audioDirectory;
-    }
+     public function getAudioName() {
+        
+        return $this->audioName;;
+     }
 
 }
 
