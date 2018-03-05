@@ -86,7 +86,12 @@ class Song
      */
      public function setAudioFile($audioFile)
      {
-         $this->audioFile = $audioFile;
+         if(isset($this->audioFile)) {
+            $this->audioFile = $this->audioDirectory . $audioFile;
+         }
+         else {
+            $this->audioFile = $audioFile;
+         }
  
          return $this;
      }

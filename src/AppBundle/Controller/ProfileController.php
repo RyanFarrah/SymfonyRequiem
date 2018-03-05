@@ -25,7 +25,8 @@ class ProfileController extends Controller
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) { 
+
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $song->getAudioFile();
 
@@ -50,11 +51,8 @@ class ProfileController extends Controller
 
         ?>
 
-        <audio src="<?=$audioDirectory?>/4dd3d93db267c83c15261373583ced1b.mp3">
+        <audio src="<?=$song->getAudioFile()?>" autoplay>
         </audio>
-        <!-- 
-         <audio src="/var/www/html/symfony3/web/uploads/audio/d9cb023cd4d566f695c72ea614d39212.mp3" autoplay >
-         </audio>  -->
          
          <?php
         
