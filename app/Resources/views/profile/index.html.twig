@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bienvenue sur TaregaSymfony</h1>
+
+<h1>Profil</h1>
+<h2>Télécharger les musiques que vous souhaitez*</h2>
+<span>*Taille maximale: 4 Mo</span>
 
 {{ form_start(form) }}
 {{ form_row(form.audioFile) }}
 {{ form_end(form) }}
+
+<h2>Et écoutez-les</h2>
 {% endblock %}
