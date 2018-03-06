@@ -18,6 +18,7 @@ class ProfileController extends Controller
      */
     public function newAction(Request $request, EntityManagerInterface $em)
     {
+        $repository = $this->getDoctrine()->getRepository(Song::class);
         $audioDirectory = $this->container->getParameter('audio_directory') . '/';
 
         $song = new Song($audioDirectory);
@@ -49,12 +50,13 @@ class ProfileController extends Controller
 
         }
 
-        ?>
+        $songs = $repository->findAll();
 
-        <audio src="<?=$song->getAudioFile()?>" autoplay>
-        </audio>
-         
-         <?php
+        foreach($songs as $song) {
+
+            echo "<span>{$song->getAudioName()}</span>" . '<audio src="' . $song->getAudioFile() . '" controls></audio>';
+
+        }
         
 
         return $this->render('profile/index.html.twig', array(
