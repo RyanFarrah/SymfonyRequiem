@@ -47,7 +47,6 @@ class Song
      *@var string
      *
      *@ORM\Column(name="AudioName", type="string", length=255)
-     *@Assert\NotBlank()
     */
 
     private $audioName;
