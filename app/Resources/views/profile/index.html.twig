@@ -11,4 +11,7 @@
 {{ form_end(form) }}
 
 <h2>Et écoutez-les</h2>
+{% for item in songs %}
+<span>{{ item.getAudioName }}</span> <audio src={{ item.getAudioFile }} controls></audio>
+{% endfor %}
 {% endblock %}

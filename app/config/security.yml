@@ -29,7 +29,6 @@ security:
                 check_path: login
             logout: 
                 path: /logout
-                target: /
                 success_handler: AppBundle\Service\LogoutHandler
             anonymous: ~
 

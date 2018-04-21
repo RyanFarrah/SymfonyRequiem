@@ -50,17 +50,11 @@ class ProfileController extends Controller
 
         }
 
-        $songs = $repository->findAll();
-
-        foreach($songs as $song) {
-
-            echo "<span>{$song->getAudioName()}</span>" . '<audio src="' . $song->getAudioFile() . '" controls></audio>';
-
-        }
-        
+        $songs = $repository->findAll();     
 
         return $this->render('profile/index.html.twig', array(
-            'form' => $form->createView(),
+            'songs' => $songs,
+            'form' => $form->createView()
         ));
     }
 
