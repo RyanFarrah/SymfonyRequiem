@@ -20,17 +20,31 @@ class FormController extends Controller
     {
 
         $user = new User();
+        $repository = $this->getDoctrine()->getRepository(User::class);
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $userUsername = $user->getUsername();
+
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
+
+            if(is_object($repository->findOneByUsername($userUsername))) {
+                return $this->render(
+                    'profile/register.html.twig',
+                    array('form' => $form->createView(),
+                        'usernameExist' => true)
+                );
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            
+
+            return $this->redirectToRoute('profile');
 
         }
 

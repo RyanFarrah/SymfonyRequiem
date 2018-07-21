@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% if usernameExist is defined %}
+<span>Ce nom d'utilisateur existe déjà</span>
+{% endif %}
 {{ form_start(form) }}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}
