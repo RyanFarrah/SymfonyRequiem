@@ -1,17 +1,44 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} 
 
 {% block body %}
 
-<h1>Profil</h1>
-<h2>Télécharger les musiques que vous souhaitez*</h2>
-<span>*Taille maximale: 4 Mo</span>
+<div class="container">
+    <div class="row">
+        <h1 class="mx-auto">Profil</h1>
 
-{{ form_start(form) }}
-{{ form_row(form.audioFile) }}
-{{ form_end(form) }}
+        <div class="w-100"></div>
 
-<h2>Et écoutez-les</h2>
-{% for item in songs %}
-<span>{{ item.getAudioName }}</span> <audio src={{ item.getAudioFile }} controls></audio>
-{% endfor %}
-{% endblock %}
+        <div class="mx-auto">
+            <h2 class="col-12 text-center">Télécharger les musiques que vous souhaitez*</h2>
+            <p class="col-12 text-center">*Taille maximale: 4 Mo</p>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="mx-auto text-center">
+            {{ form_start(form) }}
+            {{ form_label(form.audioFile) }}
+            {{ form_errors(form.audioFile) }}
+            {{ form_widget(form.audioFile) }}
+            {{ form_end(form) }}
+        </div>
+    
+    </div>
+
+    <div class="row">
+
+        <h2 class="mx-auto">Et écoutez-les</h2>
+        <div class="w-100"></div>
+        {% for item in songs %}
+        <div class="col-6">
+            <span>{{ item.getAudioName }}</span>
+            <audio src={{ item.getAudioFile }} controls></audio>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock body %}
