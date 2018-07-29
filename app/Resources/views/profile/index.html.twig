@@ -29,7 +29,9 @@
 
     <div class="row">
 
+        {% if not songs is empty%}
         <h2 class="mx-auto">Et écoutez-les</h2>
+        {% endif %}
         <div class="w-100"></div>
         {% for item in songs %}
         <div class="col-6">
