@@ -2,45 +2,53 @@
 
 {% block body %}
 
-<div class="container">
-    <div class="row">
-        <h1 class="mx-auto">Profil</h1>
+    {% block header %} 
+        {{ parent() }} 
+    {% endblock %}
 
-        <div class="w-100"></div>
+    {% block main %}
 
-        <div class="mx-auto">
-            <h2 class="col-12 text-center">Télécharger les musiques que vous souhaitez*</h2>
-            <p class="col-12 text-center">*Taille maximale: 4 Mo</p>
+        <div class="container">
+            <div class="row">
+                <h1 class="mx-auto">Profil</h1>
+
+                <div class="w-100"></div>
+
+                <div class="mx-auto">
+                    <h2 class="col-12 text-center">Télécharger les musiques que vous souhaitez*</h2>
+                    <p class="col-12 text-center">*Taille maximale: 4 Mo</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="mx-auto text-center">
+                    {{ form_start(form) }}
+                    {{ form_label(form.audioFile) }}
+                    {{ form_errors(form.audioFile) }}
+                    {{ form_widget(form.audioFile) }}
+                    {{ form_end(form) }}
+                </div>
+            
+            </div>
+
+            <div class="row">
+
+                {% if not songs is empty%}
+                <h2 class="mx-auto">Et écoutez-les</h2>
+                {% endif %}
+                <div class="w-100"></div>
+                {% for item in songs %}
+                <div class="col-6">
+                    <span>{{ item.getAudioName }}</span>
+                    <audio src={{ item.getAudioFile }} controls></audio>
+                </div>
+                {% endfor %}
+
+            </div>
         </div>
 
-    </div>
-
-    <div class="row">
-
-        <div class="mx-auto text-center">
-            {{ form_start(form) }}
-            {{ form_label(form.audioFile) }}
-            {{ form_errors(form.audioFile) }}
-            {{ form_widget(form.audioFile) }}
-            {{ form_end(form) }}
-        </div>
-    
-    </div>
-
-    <div class="row">
-
-        {% if not songs is empty%}
-        <h2 class="mx-auto">Et écoutez-les</h2>
-        {% endif %}
-        <div class="w-100"></div>
-        {% for item in songs %}
-        <div class="col-6">
-            <span>{{ item.getAudioName }}</span>
-            <audio src={{ item.getAudioFile }} controls></audio>
-        </div>
-        {% endfor %}
-
-    </div>
-</div>
+    {% endblock main %}
 
 {% endblock body %}

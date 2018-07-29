@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Bienvenue sur TaregaSymfony</h1>
-{% endblock %}
+
+    {% block header %} 
+        {{ parent() }} 
+    {% endblock %}
+
+    {% block main %}
+
+       <h1 class="col-12 text-center">Bienvenue sur TaregaSymfony</h1>
+
+    {% endblock main %}
+
+{% endblock body %}
