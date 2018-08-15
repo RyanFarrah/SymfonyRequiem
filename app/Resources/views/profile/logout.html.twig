@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <p>Vous n'êtes plus connectés</p>
-{% endblock %}
+
+    {% block header %} 
+        {{ parent() }} 
+    {% endblock %}
+
+    {% block main %}
+
+       <p>Vous n'êtes plus connectés</p>
+
+    {% endblock main %}
+
+{% endblock body %}

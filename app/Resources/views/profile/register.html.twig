@@ -1,14 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% if usernameExist is defined %}
-<span>Ce nom d'utilisateur existe déjà</span>
-{% endif %}
-{{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
+
+    {% block header %} 
+        {{ parent() }} 
+    {% endblock %}
+
+    {% block main %}
+
+    {% if usernameExist is defined %}
+    <span>Ce nom d'utilisateur existe déjà</span>
+    {% endif %} 
+    {{ form_start(form) }} 
+    {{ form_row(form.username) }} 
+    {{ form_row(form.email) }} 
     {{ form_row(form.plainPassword) }}
 
     <button type="submit">Register!</button>
-{{ form_end(form) }}
-{%  endblock %}
+    {{ form_end(form) }}
+
+    {% endblock main %}
+
+{% endblock body %}

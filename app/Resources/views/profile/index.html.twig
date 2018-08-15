@@ -15,7 +15,7 @@
                 <div class="w-100"></div>
 
                 <div class="mx-auto">
-                    <h2 class="col-12 text-center">Télécharger les musiques que vous souhaitez*</h2>
+                    <h2 class="col-12 text-center">Téléchargez les musiques que vous souhaitez*</h2>
                     <p class="col-12 text-center">*Taille maximale: 4 Mo</p>
                 </div>
 
@@ -39,10 +39,13 @@
                 <h2 class="mx-auto">Et écoutez-les</h2>
                 {% endif %}
                 <div class="w-100"></div>
-                {% for item in songs %}
+                {% for song in songs %}
                 <div class="col-6">
-                    <span>{{ item.getAudioName }}</span>
-                    <audio src={{ item.getAudioFile }} controls></audio>
+                    <span>{{ song.getAudioName }}</span>
+                    <audio src={{ song.getAudioFile }} controls></audio>
+                    <a href="{{ path('edit_song', {'id': song.id}) }}">
+                        Editer la chanson
+                    </a>
                 </div>
                 {% endfor %}
 
