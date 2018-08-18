@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Profile;
+namespace AppBundle\Controller\Profile\Song;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Song;
 use AppBundle\Form\SongType;
 
-class ProfileController extends Controller
+class EditSongController extends Controller
 {
     /**
-     * @Route("/profile", name="profile")
+     * @Route("/profile/edit/{id}", name="edit_song", requirements={"id"="\d+"})
      */
-    public function newAction(Request $request, EntityManagerInterface $em)
+    public function editAction(Request $request, EntityManagerInterface $em)
     {
         $repository = $this->getDoctrine()->getRepository(Song::class);
         $audioDirectory = $this->container->getParameter('audio_directory') . '/';
@@ -33,12 +33,16 @@ class ProfileController extends Controller
 
             $audioFile = $this->generateUniqueFileName().'.'.$file->guessExtension();
 
+            $audioName = $file->getClientOriginalName();
+
             $file->move(
                 $this->getParameter('audio_directory'),
                 $audioFile
             );
 
             $song->setAudioFile($audioFile);
+
+            $song->setAudioName($audioName);
 
             $em->persist($song);
 
