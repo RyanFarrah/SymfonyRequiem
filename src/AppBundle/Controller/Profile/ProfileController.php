@@ -19,10 +19,8 @@ class ProfileController extends Controller
     public function newAction(Request $request, EntityManagerInterface $em)
     {
         $repository = $this->getDoctrine()->getRepository(Song::class);
-        $audioDirectory = $this->container->getParameter('audio_directory') . '/';
 
         $song = new Song($audioDirectory);
-        $audioDirectory = $song->getAudioDirectory();
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 

@@ -18,11 +18,6 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 class Song
 {
 
-    public function __construct($audioDirectory) {
-        
-        $this->setAudioDirectory($audioDirectory);
-    }
-
     /**
      * @var int
      *
@@ -51,9 +46,7 @@ class Song
 
     private $audioName;
 
-    private $audioDirectory;
-
-
+    
     /**
      * Get id
      *
@@ -63,19 +56,6 @@ class Song
     {
         return $this->id;
     }
-
-    public function setAudioDirectory($audioDirectory) {
-
-        $audioDirectory = str_replace($_SERVER['DOCUMENT_ROOT'], '', $audioDirectory);
-        
-        $this->audioDirectory = $audioDirectory;
-    }
-
-    public function getAudioDirectory() 
-    {
-        return $this->audioDirectory;
-    }
-
     /**
      * Set audioFile
      *
@@ -85,12 +65,7 @@ class Song
      */
      public function setAudioFile($audioFile)
      {
-         if(isset($this->audioFile)) {
-            $this->audioFile = $this->audioDirectory . $audioFile;
-         }
-         else {
-            $this->audioFile = $audioFile;
-         }
+        $this->audioFile = $audioFile;
  
          return $this;
      }

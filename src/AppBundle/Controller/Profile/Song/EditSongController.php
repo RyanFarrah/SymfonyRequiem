@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
 
 use AppBundle\Entity\Song;
 use AppBundle\Form\SongType;
@@ -16,13 +17,11 @@ class EditSongController extends Controller
     /**
      * @Route("/profile/edit/{id}", name="edit_song", requirements={"id"="\d+"})
      */
-    public function editAction(Request $request, EntityManagerInterface $em)
+    public function editAction(Request $request, EntityManagerInterface $em, Song $song)
     {
-        $repository = $this->getDoctrine()->getRepository(Song::class);
-        $audioDirectory = $this->container->getParameter('audio_directory') . '/';
-
-        $song = new Song($audioDirectory);
-        $audioDirectory = $song->getAudioDirectory();
+        $song->setAudioFile(
+            new File($this->getParameter('audio_directory') . '/' . $song->getAudioFile())
+        );
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
@@ -50,11 +49,8 @@ class EditSongController extends Controller
 
         }
 
-        $songs = $repository->findAll();     
-
-        return $this->render('profile/index.html.twig', array(
-            'songs' => $songs,
-            'form' => $form->createView()
+        return $this->render('profile/song/edit_song.html.twig', array(
+            'form' => $form->createView(),
         ));
     }
 
