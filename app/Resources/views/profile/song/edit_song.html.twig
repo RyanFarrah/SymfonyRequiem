@@ -11,26 +11,20 @@
         <div class="container">
             <div class="row">
                 <h1 class="mx-auto">Modifier la musique : {{ form.audioName.vars.value }}</h1>
-
-                <div class="w-100"></div>
-
             </div>
 
             <div class="row">
 
                 <div class="mx-auto text-center">
                     {{ form_start(form) }}
-                    {{ form_label(form.audioFile) }}
-                    {{ form_errors(form.audioFile) }}
-                    {{ form_widget(form.audioFile) }}
+                    {{ form_label(form.audioName) }}
+                    {{ form_errors(form.audioName) }}
+                    {{ form_widget(form.audioName) }}
                     {{ form_end(form) }}
                 </div>
             
             </div>
 
-            <div class="row">
-
-            </div>
         </div>
 
     {% endblock main %}

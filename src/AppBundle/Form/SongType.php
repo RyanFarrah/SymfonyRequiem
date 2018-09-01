@@ -11,13 +11,24 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
+
+
 class SongType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('audioFile', FileType::class, array('label' => 'Choisissez un fichier audio'))
             ->add('audioName', TextType::class, array('label' => 'Choisissez son nom'))
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+                if($event->getData()->getAudioFile() === null) {
+                    $event->getForm()->add('audioFile', FileType::class, array('label' => 'Choisissez un fichier audio'));
+                }
+                else {
+                    return false;
+                }
+            })
             ->add('save', SubmitType::class)
         ;
     }
