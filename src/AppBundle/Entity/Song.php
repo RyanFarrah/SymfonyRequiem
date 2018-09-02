@@ -30,7 +30,7 @@ class Song
     /**
      * @var string
      *
-     * @ORM\Column(name="AudioFile", type="string", length=255)
+     * @ORM\Column(name="audio_file", type="string", length=255)
      * @Assert\NotBlank(message="Please, upload a audio file")
      * @Assert\File(
      *    mimeTypes={ "audio/mpeg" },
@@ -41,9 +41,8 @@ class Song
     /**
      *@var string
      *
-     *@ORM\Column(name="AudioName", type="string", length=255)
+     *@ORM\Column(name="audio_name", type="string", length=255)
     */
-
     private $audioName;
 
     
