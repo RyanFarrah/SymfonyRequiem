@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Song;
 use AppBundle\Form\SongType;
 
-class ProfileController extends Controller
+class ProfilController extends Controller
 {
     /**
      * @Route("/profile", name="profile")
