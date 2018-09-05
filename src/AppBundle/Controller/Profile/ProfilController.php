@@ -26,6 +26,8 @@ class ProfilController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) { 
 
+            $song->setUser($this->getUser());
+
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $song->getAudioFile();
 
@@ -44,7 +46,7 @@ class ProfilController extends Controller
 
         }
 
-        $songs = $repository->findAll();     
+        $songs = $repository->findByUser($this->getUser()->getId());     
 
         return $this->render('profile/index.html.twig', array(
             'songs' => $songs,
