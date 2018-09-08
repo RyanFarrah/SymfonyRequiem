@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %} 
+
+{% block body %}
+
+    {% block header %} 
+        {{ parent() }} 
+    {% endblock %}
+
+    {% block main %}
+
+        <div class="container">
+            <div class="row">
+                <h1 class="mx-auto">Profil</h1>
+
+                <div class="w-100"></div>
+
+                <div class="mx-auto">
+                    <h2 class="col-12 text-center">Téléchargez les musiques que vous souhaitez*</h2>
+                    <p class="col-12 text-center">*Taille maximale: 4 Mo</p>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="mx-auto text-center">
+                    {{ form_start(form) }}
+                    {{ form_label(form.audioFile) }}
+                    {{ form_errors(form.audioFile) }}
+                    {{ form_widget(form.audioFile) }}
+                    {{ form_end(form) }}
+                </div>
+            
+            </div>
+
+    {% endblock main %}
+
+{% endblock body %}

@@ -20,37 +20,10 @@ class ProfilController extends Controller
     {
         $repository = $this->getDoctrine()->getRepository(Song::class);
 
-        $song = new Song($audioDirectory);
-        $form = $this->createForm(SongType::class, $song);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) { 
-
-            $song->setUser($this->getUser());
-
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $song->getAudioFile();
-
-            $audioFile = $this->generateUniqueFileName().'.'.$file->guessExtension();
-
-            $file->move(
-                $this->getParameter('audio_directory'),
-                $audioFile
-            );
-
-            $song->setAudioFile($audioFile);
-
-            $em->persist($song);
-
-            $em->flush();
-
-        }
-
         $songs = $repository->findByUser($this->getUser()->getId());     
 
         return $this->render('profile/index.html.twig', array(
             'songs' => $songs,
-            'form' => $form->createView()
         ));
     }
 
