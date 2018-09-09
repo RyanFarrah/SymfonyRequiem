@@ -19,29 +19,22 @@ class EditSongController extends Controller
      */
     public function editAction(Request $request, EntityManagerInterface $em, Song $song)
     {
+
+        $audioFile = $song->getAudioFile();
+
         $song->setAudioFile(
-            new File($this->getParameter('audio_directory') . '/' . $song->getAudioFile())
-        );
+            new File($this->getParameter('audio_directory') . '/' . $song->getAudioFile()));
+
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) { 
 
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $song->getAudioFile();
-
-            $audioFile = $this->generateUniqueFileName().'.'.$file->guessExtension();
-
-            $audioName = $file->getClientOriginalName();
-
-            $file->move(
-                $this->getParameter('audio_directory'),
-                $audioFile
-            );
+            $song = $form->getData();
 
             $song->setAudioFile($audioFile);
 
-            $song->setAudioName($audioName);
+            $song->setUpdatedAt(new \DateTime());
 
             $em->persist($song);
 

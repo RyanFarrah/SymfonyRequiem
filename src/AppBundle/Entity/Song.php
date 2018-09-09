@@ -51,6 +51,20 @@ class Song
      */
     private $user;
 
+    /**
+     * @var \DateTime
+     * 
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     * 
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
     
     /**
      * Get id
@@ -98,6 +112,53 @@ class Song
         return $this->audioName;;
      }
 
+    /**
+     * Get the value of createdAt
+     *
+     * @return \DateTime
+     */ 
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the value of createdAt
+     *
+     * @param \DateTime  $createdAt
+     *
+     * @return  self
+     */ 
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of updatedAt
+     *
+     * @return \DateTime
+     */ 
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of updatedAt
+     *
+     * @param \DateTime  $updatedAt
+     *
+     * @return  self
+     */ 
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 
     /**
      * Get the value of user
@@ -118,5 +179,6 @@ class Song
 
         return $this;
     }
+
 }
 

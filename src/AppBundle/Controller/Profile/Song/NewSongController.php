@@ -19,6 +19,8 @@ class NewSongController extends Controller
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 
+        $repository = $this->getDoctrine()->getRepository(Song::class);
+
         $song = new Song($audioDirectory);
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);
@@ -38,6 +40,10 @@ class NewSongController extends Controller
             );
 
             $song->setAudioFile($audioFile);
+
+            $song->setCreatedAt(new \DateTime());
+
+            $song->setUpdatedAt(new \DateTime());
 
             $em->persist($song);
 

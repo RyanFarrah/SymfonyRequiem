@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\Song;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -26,11 +27,10 @@ class SongType extends AbstractType
                     $event->getForm()->add('audioFile', FileType::class, array('label' => 'Choisissez un fichier audio'));
                 }
                 else {
-                    return false;
+                    return;
                 }
             })
-            ->add('save', SubmitType::class)
-        ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
