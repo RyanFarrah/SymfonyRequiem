@@ -14,21 +14,16 @@
 
                 <div class="w-100"></div>
 
-                <div class="mx-auto">
-                    <h2 class="col-12 text-center">Téléchargez les musiques que vous souhaitez*</h2>
-                    <p class="col-12 text-center">*Taille maximale: 4 Mo</p>
-                </div>
-
             </div>
 
             <div class="row">
-             <a href="{{ path('new_song') }}">Ajouter des nouvelles musiques</a>
+             <a href="{{ path('new_song') }}">Télécharger une musique</a>
             </div>
 
             <div class="row">
 
                 {% if not songs is empty%}
-                <h2 class="mx-auto">Et écoutez-les</h2>
+                <h2 class="mx-auto">Ecouter vos musiques</h2>
                 {% endif %}
                 <div class="w-100"></div>
                 {% for song in songs %}
