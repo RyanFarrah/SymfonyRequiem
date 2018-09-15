@@ -11,16 +11,17 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Song;
 use AppBundle\Form\SongType;
 
-class ProfilController extends Controller
+class ProfileController extends Controller
 {
     /**
      * @Route("/profile", name="profile")
      */
     public function newAction(Request $request, EntityManagerInterface $em)
     {
+
         $repository = $this->getDoctrine()->getRepository(Song::class);
 
-        $songs = $repository->findByUser($this->getUser()->getId());     
+        $songs = $repository->findByUser($this->getUser()->getId());    
 
         return $this->render('profile/index.html.twig', array(
             'songs' => $songs,
