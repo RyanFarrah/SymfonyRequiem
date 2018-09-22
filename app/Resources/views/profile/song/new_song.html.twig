@@ -9,6 +9,7 @@
     {% block main %}
 
         <div class="container">
+
             <div class="row">
                 <h1 class="mx-auto">Profil</h1>
 
@@ -24,14 +25,40 @@
             <div class="row">
 
                 <div class="mx-auto text-center">
-                    {{ form_start(form) }}
-                    {{ form_label(form.audioFile) }}
-                    {{ form_errors(form.audioFile) }}
-                    {{ form_widget(form.audioFile) }}
-                    {{ form_end(form) }}
+
+                {{ form_start(form) }}
+
+                    <div class="row">
+
+                        {{ form_errors(form) }}
+
+                        <div class="mx-auto text-center">
+                            {{ form_row(form.audioFile) }}
+                        </div>
+
+                        <div class="w-100"></div>
+                        
+                        <div class="mx-auto text-center">
+                            {{ form_row(form.audioName) }}
+                        </div>
+
+                        <div class="w-100"></div>
+
+                        <div class="mx-auto text-center">
+                            {{ form_end(form) }}
+                        </div>
+
+                    </div>
+
                 </div>
             
             </div>
+
+            {% for message in app.flashes('notice') %}
+                <div class="flash-notice">
+                    {{ message }}
+                </div>
+            {% endfor %}
 
     {% endblock main %}
 

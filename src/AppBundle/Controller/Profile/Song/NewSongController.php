@@ -21,8 +21,11 @@ class NewSongController extends Controller
 
         $repository = $this->getDoctrine()->getRepository(Song::class);
 
-        $song = new Song($audioDirectory);
+        $song = new Song();
         $form = $this->createForm(SongType::class, $song);
+        //L'objet et le formulaire clean pour ne pas injecter les données transmis lors du soumission du formulaire
+        $songClean = clone $song;
+        $formClean = clone $form;
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) { 
@@ -45,16 +48,29 @@ class NewSongController extends Controller
 
             $song->setUpdatedAt(new \DateTime());
 
+            $form->getData($song);
+
             $em->persist($song);
 
-            $em->flush();
+            $em->flush();   
+
+            $audioName = $song->getAudioName();
+
+            $this->addFlash(
+                'notice',
+                "Vous avez bien enregistré votre musique : $audioName"
+            );
+            
+            $song = $songClean;
+
+            $form = $formClean;
 
         }
 
         $songs = $repository->findByUser($this->getUser()->getId());     
 
         return $this->render('profile/song/new_song.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 
