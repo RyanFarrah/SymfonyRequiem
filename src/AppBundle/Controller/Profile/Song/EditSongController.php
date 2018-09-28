@@ -23,7 +23,7 @@ class EditSongController extends Controller
         $audioFile = $song->getAudioFile();
 
         $song->setAudioFile(
-            new File($this->getParameter('audio_directory') . '/' . $song->getAudioFile()));
+            new File($this->getParameter('audio_directory') . $song::AUDIOFILEPATH . $song->getAudioFile()));
 
         $form = $this->createForm(SongType::class, $song);
         $form->handleRequest($request);

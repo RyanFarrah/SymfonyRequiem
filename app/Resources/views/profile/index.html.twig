@@ -29,7 +29,8 @@
                 {% for song in songs %}
                 <div class="col-6">
                     <span>{{ song.audioName }}</span>
-                    <audio src="{{ asset('uploads/audio/') ~ song.audioFile}}" controls></audio>
+                    <audio src="{{ asset('uploads/audio/file/') ~ song.audioFile}}" controls></audio>
+                    <img src="{{ asset('uploads/audio/cover/') ~ song.cover}}"/>
                     <a href="{{ path('edit_song', {'id': song.id}) }}">
                         Editer la chanson
                     </a>

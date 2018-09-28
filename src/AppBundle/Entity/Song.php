@@ -18,6 +18,9 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 class Song
 {
 
+    const AUDIOFILEPATH = '/file/';
+    const COVERFILEPATH = '/cover/';
+
     /**
      * @var int
      *
@@ -28,6 +31,7 @@ class Song
     private $id;
 
     /**
+     * Nom du fichier audio
      * @var string
      *
      * @ORM\Column(name="audio_file", type="string", length=255)
@@ -39,6 +43,7 @@ class Song
     private $audioFile;
 
     /**
+     * Nom de la musique pour l'utilisateur
      *@var string
      *
      *@ORM\Column(name="audio_name", type="string", length=255)
@@ -46,6 +51,15 @@ class Song
     private $audioName;
 
     /**
+     * Nom du fichier de cover
+     *@var string
+     *
+     *@ORM\Column(name="audio_cover", nullable=true, type="string", length=255)
+    */
+    private $cover;
+
+    /**
+     * Utilisateur associé
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -180,5 +194,24 @@ class Song
         return $this;
     }
 
+    /**
+     * Get nom du fichier de cover
+     */ 
+    public function getCover()
+    {
+        return $this->cover;
+    }
+
+    /**
+     * Set nom du fichier de cover
+     *
+     * @return  self
+     */ 
+    public function setCover($cover)
+    {
+        $this->cover = $cover;
+
+        return $this;
+    }
 }
 

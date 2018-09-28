@@ -30,19 +30,37 @@ class NewSongController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) { 
 
-            $song->setUser($this->getUser());
+            $getID3 = new \getID3;
 
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $song->getAudioFile();
+            $audioPath = $this->getParameter('audio_directory');
 
-            $audioFile = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $ThisFileInfo = $getID3->analyze($song->getAudioFile()->getRealPath());
 
-            $file->move(
-                $this->getParameter('audio_directory'),
-                $audioFile
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $audioFile */
+            $audioFile = $song->getAudioFile();
+
+            $audioNameFile = $this->generateUniqueFileName().'.'.$audioFile->guessExtension();
+
+            $audioFile->move(
+                $audioPath . $song::AUDIOFILEPATH,
+                $audioNameFile
             );
 
-            $song->setAudioFile($audioFile);
+            if(isset($ThisFileInfo['id3v2']['APIC'][0]['data'])) {
+
+                $coverNameFile = $this->generateUniqueFileName().'.'.'.jpeg';
+
+                $coverFile = $audioPath . $song::COVERFILEPATH . $coverNameFile;
+
+                file_put_contents($coverFile, $ThisFileInfo['id3v2']['APIC'][0]['data']);
+
+                $song->setCover($coverNameFile);
+
+            }
+
+            $song->setUser($this->getUser());
+
+            $song->setAudioFile($audioNameFile);
 
             $song->setCreatedAt(new \DateTime());
 
