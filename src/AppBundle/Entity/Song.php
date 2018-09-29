@@ -34,7 +34,7 @@ class Song
      * Nom du fichier audio
      * @var string
      *
-     * @ORM\Column(name="audio_file", type="string", length=255)
+     * @ORM\Column(name="file", type="string", length=255)
      * @Assert\NotBlank(message="Please, upload a audio file")
      * @Assert\File(
      *    mimeTypes={ "audio/mpeg" },
@@ -46,7 +46,7 @@ class Song
      * Nom de la musique pour l'utilisateur
      *@var string
      *
-     *@ORM\Column(name="audio_name", type="string", length=255)
+     *@ORM\Column(name="name", type="string", length=255)
     */
     private $audioName;
 
@@ -54,7 +54,7 @@ class Song
      * Nom du fichier de cover
      *@var string
      *
-     *@ORM\Column(name="audio_cover", nullable=true, type="string", length=255)
+     *@ORM\Column(name="cover", nullable=true, type="string", length=255)
     */
     private $cover;
 
