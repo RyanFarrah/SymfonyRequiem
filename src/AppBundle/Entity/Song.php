@@ -6,6 +6,7 @@ use AppBundle\Entity\Song;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\FormInterface;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -35,10 +36,11 @@ class Song
      * @var string
      *
      * @ORM\Column(name="file", type="string", length=255)
-     * @Assert\NotBlank(message="Please, upload a audio file")
+     * @Assert\NotBlank(message="Please, upload a audio file", groups={"new"})
      * @Assert\File(
      *    mimeTypes={ "audio/mpeg" },
-     *    maxSize = "30M")
+     *    maxSize = "10M",
+     *    groups={"new"})
      */
     private $audioFile;
 
@@ -46,7 +48,7 @@ class Song
      * Nom de la musique pour l'utilisateur
      *@var string
      *
-     *@ORM\Column(name="name", type="string", length=255)
+     *@ORM\Column(name="name", type="string", length=1)
     */
     private $audioName;
 
@@ -212,6 +214,19 @@ class Song
         $this->cover = $cover;
 
         return $this;
+    }
+
+    /**
+     * Determine the validation group
+     *
+     * @param FormInterface $form
+     * @return array
+     */
+    function determineValidationGroups(FormInterface $form) {
+        if($form->get('audioFile')->getData()) {
+            return ['default', 'new'];
+        }
+        return ['default'];
     }
 }
 

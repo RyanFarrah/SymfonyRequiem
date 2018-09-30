@@ -20,7 +20,9 @@ class EditSongController extends Controller
     public function editAction(Request $request, EntityManagerInterface $em, Song $song)
     {
 
-        $audioFile = $song->getAudioFile();
+        $audioNameFile = $song->getAudioFile();
+
+        $audioPath = $this->getParameter('audio_directory');
 
         $song->setAudioFile(
             new File($this->getParameter('audio_directory') . $song::AUDIOFILEPATH . $song->getAudioFile()));
@@ -32,7 +34,18 @@ class EditSongController extends Controller
 
             $song = $form->getData();
 
-            $song->setAudioFile($audioFile);
+            if($song->getAudioFile() !== null) {
+                unlink($audioPath . $song::AUDIOFILEPATH . $audioNameFile);
+                /** @var Symfony\Component\HttpFoundation\File\UploadedFile $audioFile */
+                $audioFile = $song->getAudioFile();
+                $audioNameFile = $this->generateUniqueFileName().'.'.$audioFile->guessExtension();
+                $audioFile->move(
+                    $audioPath . $song::AUDIOFILEPATH,
+                    $audioNameFile
+                );
+            }
+
+            $song->setAudioFile($audioNameFile);
 
             $song->setUpdatedAt(new \DateTime());
 
