@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Profile\Song;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\FileHandler;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,12 @@ class NewSongController extends Controller
 {
     /**
      * @Route("/profile/new", name="new_song")
-     */
-    public function newAction(Request $request, EntityManagerInterface $em)
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param FileHandler $fileHandler
+     * @return void
+    */
+    public function newAction(Request $request, EntityManagerInterface $em, FileHandler $fileHandler)
     {
 
         $repository = $this->getDoctrine()->getRepository(Song::class);
@@ -30,46 +35,20 @@ class NewSongController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) { 
 
-            $getID3 = new \getID3;
+            $song = $form->getData();
 
-            $audioPath = $this->getParameter('audio_directory');
+            $audioFileName = $fileHandler->newAudioFile($song);
+            $coverFileName = $fileHandler->getCoverFile($song, $audioFileName);
 
-            $ThisFileInfo = $getID3->analyze($song->getAudioFile()->getRealPath());
+            $now = new \DateTime();
 
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $audioFile */
-            $audioFile = $song->getAudioFile();
-
-            $audioNameFile = $this->generateUniqueFileName().'.'.$audioFile->guessExtension();
-
-            $audioFile->move(
-                $audioPath . $song::AUDIOFILEPATH,
-                $audioNameFile
-            );
-
-            if(isset($ThisFileInfo['id3v2']['APIC'][0]['data'])) {
-
-                $coverNameFile = $this->generateUniqueFileName().'.'.'.jpeg';
-
-                $coverFile = $audioPath . $song::COVERFILEPATH . $coverNameFile;
-
-                file_put_contents($coverFile, $ThisFileInfo['id3v2']['APIC'][0]['data']);
-
-                $song->setCover($coverNameFile);
-
-            }
-
+            $song->setAudioFile($audioFileName);
             $song->setUser($this->getUser());
-
-            $song->setAudioFile($audioNameFile);
-
-            $song->setCreatedAt(new \DateTime());
-
-            $song->setUpdatedAt(new \DateTime());
-
-            $form->getData($song);
-
+            if($coverFileName) {
+                $song->setCover($coverFileName);
+            }
+            
             $em->persist($song);
-
             $em->flush();   
 
             $audioName = $song->getAudioName();
@@ -80,23 +59,12 @@ class NewSongController extends Controller
             );
             
             $song = $songClean;
-
             $form = $formClean;
 
-        }
-
-        $songs = $repository->findByUser($this->getUser()->getId());     
+        } 
 
         return $this->render('profile/song/new_song.html.twig', array(
             'form' => $form->createView(),
         ));
-    }
-
-    /**
-     * @return string
-     */
-    private function generateUniqueFileName()
-    {
-        return md5(uniqid());
     }
 }

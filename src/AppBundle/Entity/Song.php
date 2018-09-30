@@ -15,6 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
  *
  * @ORM\Table(name="song")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SongRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Song
 {
@@ -48,7 +49,7 @@ class Song
      * Nom de la musique pour l'utilisateur
      *@var string
      *
-     *@ORM\Column(name="name", type="string", length=1)
+     *@ORM\Column(name="name", type="string", length=255)
     */
     private $audioName;
 
@@ -80,7 +81,6 @@ class Song
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
-
     
     /**
      * Get id
@@ -214,6 +214,26 @@ class Song
         $this->cover = $cover;
 
         return $this;
+    }
+
+    /**
+     * Set DateTime columns when entity is created
+     * @ORM\PrePersist
+     */
+    public function setDateValues()
+    {
+        $now = new \DateTime();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
+    }
+
+    /**
+     * Set updatedAt property when entity is updated
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
     }
 
     /**
