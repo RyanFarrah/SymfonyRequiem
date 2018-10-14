@@ -13,6 +13,7 @@ security:
                 class: AppBundle:User
                 property: username
 
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -20,9 +21,8 @@ security:
             security: false
 
         main:
-            logout_on_user_change: true
             pattern: ^/
-            http_basic: ~
+            anonymous: ~
             provider: our_db_provider
             form_login: 
                 login_path: login
@@ -30,7 +30,7 @@ security:
             logout: 
                 path: /profile/logout
                 success_handler: AppBundle\Service\LogoutHandler
-            anonymous: ~
+            logout_on_user_change: true
 
     access_control:
         - { path: ^/profile, roles: ROLE_USER }
