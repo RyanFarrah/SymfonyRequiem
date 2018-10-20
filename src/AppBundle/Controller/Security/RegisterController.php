@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\SecurityController;
+namespace AppBundle\Controller\Security;
 
 use AppBundle\Form\UserType;
 use AppBundle\Entity\User;
