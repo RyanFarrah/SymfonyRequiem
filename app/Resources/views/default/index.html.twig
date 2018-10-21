@@ -8,6 +8,12 @@
 
     {% block main %}
 
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+    {% endfor %}
+
        <h1 class="col-12 text-center">Bienvenue sur TaregaSymfony</h1>
 
     {% endblock main %}

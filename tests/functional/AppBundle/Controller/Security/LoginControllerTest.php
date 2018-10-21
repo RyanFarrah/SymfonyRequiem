@@ -3,8 +3,9 @@
 namespace Tests\Functional\AppBundle\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Client;
 
-class ProfileControllerTest extends WebTestCase
+class LogControllerTest extends WebTestCase
 {
     /**
      * Test when user not connected enter member area
@@ -40,8 +41,9 @@ class ProfileControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/profile');
 
-
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        return $client;
     }
 
     /**
@@ -50,7 +52,7 @@ class ProfileControllerTest extends WebTestCase
      *
      * @return void
      */
-    public function testLoginUserConnection() {
+    public function testUserLogin() {
 
         $client = static::createClient();
 
@@ -68,6 +70,25 @@ class ProfileControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         $this->assertEquals("http://localhost/profile", $crawler->getUri());
+
+    }
+
+    /**
+     * Test logout user 
+     * @depends testUserConnectedInMemberArea
+     */
+    public function testUserLogout($client) {
+
+        $client->request('GET', '/profile/logout');
+
+        $crawler = $client->followRedirect();
+
+        $this->assertEquals("http://localhost/", $crawler->getUri());
+
+        $crawler = $crawler->filter(".alert-success");
+
+        $this->assertContains("Vous vous êtes bien déconnecté", $crawler->html());
+
 
     }
 }
