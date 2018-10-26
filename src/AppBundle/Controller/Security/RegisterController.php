@@ -26,12 +26,11 @@ class RegisterController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $userUsername = $user->getUsername();
-
+            $user = $form->getData();
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
 
-            if(is_object($repository->findOneByUsername($userUsername))) {
+            if(is_object($repository->findOneByUsername($user->getUsername()))) {
                 return $this->render(
                     'profile/register.html.twig',
                     array('form' => $form->createView(),

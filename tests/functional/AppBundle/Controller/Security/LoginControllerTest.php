@@ -4,6 +4,9 @@ namespace Tests\Functional\AppBundle\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Entity\User;
 
 class LogControllerTest extends WebTestCase
 {
@@ -89,6 +92,33 @@ class LogControllerTest extends WebTestCase
 
         $this->assertContains("Vous vous êtes bien déconnecté", $crawler->html());
 
+    }
+
+    public function testUserRegisterTest() {
+
+        $user = new User();
+        $user->setUsername('username');
+        $user->setEmail('email@example.com');
+        $user->setPlainPassword('password');
+        
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', 'register');
+
+
+        $form = $crawler->selectButton('user_submit')->form(array(
+            'user[username]'        => $user->getUsername(),
+            'user[email]'           => $user->getEmail(),
+            'user[plainPassword]'   => $user->getPlainPassword(),
+        ));
+
+        $client->submit($form);
+
+        $userRepository = $this->createMock(ObjectRepository::class);
+
+        $userRepository->expects($this->any())
+            ->method('find')
+            ->willReturn($user);
 
     }
 }
