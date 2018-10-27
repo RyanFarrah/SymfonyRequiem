@@ -48,6 +48,7 @@
         "post-update-cmd": [
             "@symfony-scripts"
         ],
+        "init-test": "php bin/console doctrine:database:import --env=test app/sql/test/user.sql",
         "test": "./vendor/bin/simple-phpunit"
     },
     "config": {

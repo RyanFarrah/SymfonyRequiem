@@ -1,2 +1,2 @@
-INSERT INTO `user` (`id`, `username`, `email`, `password`, `is_active`) 
-VALUES (NULL, 'username', 'email@email.com', 'password', '1')
+INSERT INTO `user` (`username`, `email`, `password`, `is_active`) 
+VALUES ('username', 'email@email.com', 'password', '1')
