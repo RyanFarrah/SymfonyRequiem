@@ -8,7 +8,7 @@
 
     {% block main %}
 
-    {% if usernameExist is defined %}
+    {% if usernameExist is same as(true) %}
     <span>Ce nom d'utilisateur existe déjà</span>
     {% endif %} 
     {{ form_start(form) }} 

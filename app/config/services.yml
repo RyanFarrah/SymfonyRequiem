@@ -32,3 +32,11 @@ services:
     AppBundle\Service\FileHandler:
         arguments: 
             $audioDirectory: '%audio_directory%'
+
+    app.form_handler.user:
+        class: AppBundle\Form\User\UserHandler
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@security.password_encoder"
+        tags:
+            - { name: form.handler }

@@ -2,8 +2,9 @@
 
 namespace AppBundle\Controller\Security;
 
-use AppBundle\Form\UserType;
+use AppBundle\Form\User\UserType;
 use AppBundle\Entity\User;
+use AppBundle\Form\User\UserHandler;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -20,36 +21,21 @@ class RegisterController extends Controller
     {
 
         $user = new User();
+        $usernameExist = null;
         $repository = $this->getDoctrine()->getRepository(User::class);
-        $form = $this->createForm(UserType::class, $user);
+        $handler = $this->get('hostnet.form_handler.factory')->create(UserHandler::class);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $user = $form->getData();
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
-            if(is_object($repository->findOneByUsername($user->getUsername()))) {
-                return $this->render(
-                    'profile/register.html.twig',
-                    array('form' => $form->createView(),
-                        'usernameExist' => true)
-                );
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            
-
+        $response = $handler->handle($request, $user);
+        if($response === true) {
             return $this->redirectToRoute('profile');
-
+        } elseif ($response === 'usernameExist') {
+            $usernameExist = true;
         }
 
         return $this->render(
             'profile/register.html.twig',
-            array('form' => $form->createView())
+            array('form' => $handler->getForm()->createView(),
+                  'usernameExist' => $usernameExist)
         );
     }
 }

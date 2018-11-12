@@ -13,15 +13,10 @@ class UserTypeTest extends TypeTestCase
     {
         $options = $this->createMock(OptionsResolver::class);
 
-        $options->setDefaults(array(
-            'host'     => 'lol',
-        ));
-
-        $options->resolve(array("hosst" => "loql"));
         $formData = array(
             'username' => 'username2',
             'plainPassword' => 'password2',
-            'email' => 'email2'
+            'email' => 'email2@email.com'
         );
         $objectToCompare = new User();
         $form = $this->factory->create(UserType::class, $objectToCompare);
@@ -29,7 +24,7 @@ class UserTypeTest extends TypeTestCase
         $object = new User();
         $object->setUsername('username2');
         $object->setPlainPassword('password2');
-        $object->setEmail('email2');
+        $object->setEmail('email2@email.com');
 
         $form->submit($formData);
 
