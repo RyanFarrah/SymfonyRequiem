@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Song;
-use AppBundle\Form\SongType;
+use AppBundle\Form\Song\SongType;
 
 class NewSongController extends Controller
 {

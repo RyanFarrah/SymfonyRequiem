@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
 
 use AppBundle\Entity\Song;
-use AppBundle\Form\SongType;
+use AppBundle\Form\Song\SongType;
 
 class EditSongController extends Controller
 {

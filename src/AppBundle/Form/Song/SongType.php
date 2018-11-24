@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Song;
 
 use AppBundle\Entity\Song;
 use Symfony\Component\Form\AbstractType;
