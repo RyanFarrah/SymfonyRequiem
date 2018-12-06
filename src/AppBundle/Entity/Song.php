@@ -235,18 +235,5 @@ class Song
     {
         $this->updatedAt = new \DateTime();
     }
-
-    /**
-     * Determine the validation group
-     *
-     * @param FormInterface $form
-     * @return array
-     */
-    function determineValidationGroups(FormInterface $form) {
-        if($form->get('audioFile')->getData()) {
-            return ['default', 'new'];
-        }
-        return ['default'];
-    }
 }
 

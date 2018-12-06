@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
 
 use AppBundle\Entity\Song;
-use AppBundle\Form\Song\SongType;
+use AppBundle\Form\Song\Type\EditSongType;
+use AppBundle\Form\Song\Type\NewSongType;
 
 class SongController extends Controller
 {
@@ -32,7 +33,7 @@ class SongController extends Controller
         $song->setAudioFile(
             new File($this->getParameter('audio_directory') . $song::AUDIOFILEPATH . $song->getAudioFile()));
 
-        $form = $this->createForm(SongType::class, $song);
+        $form = $this->createForm(EditSongType::class, $song);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) { 
@@ -69,7 +70,7 @@ class SongController extends Controller
         $repository = $this->getDoctrine()->getRepository(Song::class);
 
         $song = new Song();
-        $form = $this->createForm(SongType::class, $song);
+        $form = $this->createForm(NewSongType::class, $song);
         //L'objet et le formulaire clean pour ne pas injecter les données transmis lors du soumission du formulaire
         $songClean = clone $song;
         $formClean = clone $form;
