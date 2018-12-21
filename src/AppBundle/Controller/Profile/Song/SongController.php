@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use AppBundle\Entity\Song;
 use AppBundle\Form\Song\Type\EditSongType;
 use AppBundle\Form\Song\Type\NewSongType;
+use AppBundle\Form\Song\Handler\NewSongHandler;
 
 class SongController extends Controller
 {
@@ -66,48 +67,27 @@ class SongController extends Controller
     */
     public function newAction(Request $request, EntityManagerInterface $em, FileHandler $fileHandler)
     {
-
         $repository = $this->getDoctrine()->getRepository(Song::class);
 
         $song = new Song();
         $form = $this->createForm(NewSongType::class, $song);
-        //L'objet et le formulaire clean pour ne pas injecter les données transmis lors du soumission du formulaire
-        $songClean = clone $song;
+        //The clean form for not reinject the data when the form is valid
         $formClean = clone $form;
-        $form->handleRequest($request);
+        
+        $handler = $this->get('hostnet.form_handler.factory')->create(NewSongHandler::class);
 
-        if ($form->isSubmitted() && $form->isValid()) { 
-
-            $song = $form->getData();
-
-            $audioFileName = $fileHandler->newAudioFile($song);
-            $coverFileName = $fileHandler->getCoverFile($song, $audioFileName);
-
-            $now = new \DateTime();
-
-            $song->setAudioFile($audioFileName);
-            $song->setUser($this->getUser());
-            if($coverFileName) {
-                $song->setCover($coverFileName);
-            }
-            
-            $em->persist($song);
-            $em->flush();   
-
-            $audioName = $song->getAudioName();
-
+        if($handler->handle($request, $song)) {
             $this->addFlash(
                 'notice',
-                "Vous avez bien enregistré votre musique : $audioName"
+                'Vous avez bien enregistré votre musique'
             );
-            
-            $song = $songClean;
-            $form = $formClean;
-
-        } 
+            $form = $formClean->createView();
+        } else {
+            $form = $handler->getForm()->createView();
+        }
 
         return $this->render('profile/song/new_song.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $form
         ));
     }
 }

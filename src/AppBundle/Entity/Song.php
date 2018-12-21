@@ -37,11 +37,13 @@ class Song
      * @var string
      *
      * @ORM\Column(name="file", type="string", length=255)
-     * @Assert\NotBlank(message="Please, upload a audio file", groups={"new"})
+     * @Assert\NotBlank(message="Veuillez télécharger un fichier de musique")
      * @Assert\File(
      *    mimeTypes={ "audio/mpeg" },
+     *    mimeTypesMessage="Veuillez télécharger un fichier dans un format valide",
      *    maxSize = "10M",
-     *    groups={"new"})
+     *    maxSizeMessage="Le fichier ne doit pas dépasser 10M",
+     * )
      */
     private $audioFile;
 
@@ -49,7 +51,8 @@ class Song
      * Nom de la musique pour l'utilisateur
      *@var string
      *
-     *@ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank
     */
     private $audioName;
 

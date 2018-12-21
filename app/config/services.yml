@@ -40,3 +40,12 @@ services:
             - "@security.password_encoder"
         tags:
             - { name: form.handler }
+
+    app.form_handler.song.new:
+        class: AppBundle\Form\Song\Handler\NewSongHandler
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - AppBundle\Service\FileHandler
+            - "@security.token_storage"
+        tags:
+            - { name: form.handler }
