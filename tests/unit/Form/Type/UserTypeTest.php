@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Form\Type;
 
-use AppBundle\Form\UserType;
+use AppBundle\Form\User\UserType;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;

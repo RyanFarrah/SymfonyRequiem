@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 
-class LogControllerTest extends WebTestCase
+class BasicSecurityTest extends WebTestCase
 {
     /**
      * Test when user not connected enter member area

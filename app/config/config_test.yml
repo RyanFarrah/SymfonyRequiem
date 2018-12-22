@@ -1,6 +1,10 @@
 imports:
     - { resource: config_dev.yml }
 
+parameters:
+    audio_uploads_directory: '%kernel.project_dir%/app/shared/files/test/uploads/audio/'
+    audio_directory: '%kernel.project_dir%/app/shared/files/test/storage/audio/'
+
 doctrine:
     dbal:
         dbname:   symfonytest
