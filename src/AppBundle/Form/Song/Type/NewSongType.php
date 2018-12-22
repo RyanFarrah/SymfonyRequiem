@@ -34,6 +34,7 @@ class NewSongType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Song::class,
+            'validation_groups' => array('Default', 'new'),
         ));
     }
 }

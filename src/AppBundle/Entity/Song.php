@@ -37,12 +37,13 @@ class Song
      * @var string
      *
      * @ORM\Column(name="file", type="string", length=255)
-     * @Assert\NotBlank(message="Veuillez télécharger un fichier de musique")
+     * @Assert\NotBlank(message="Veuillez télécharger un fichier de musique", groups={"new"})
      * @Assert\File(
      *    mimeTypes={ "audio/mpeg" },
      *    mimeTypesMessage="Veuillez télécharger un fichier dans un format valide",
      *    maxSize = "10M",
      *    maxSizeMessage="Le fichier ne doit pas dépasser 10M",
+     * groups={"new"}
      * )
      */
     private $audioFile;

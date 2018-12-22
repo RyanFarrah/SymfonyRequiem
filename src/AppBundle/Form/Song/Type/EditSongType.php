@@ -34,7 +34,16 @@ class EditSongType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Song::class
+            'data_class' => Song::class,
+            'validation_groups' => function (FormInterface $form) {
+                $data = $form->getData();
+
+                if ($data->getAudioFile()) {
+                    return array('Default', 'new');
+                } else {
+                    return array('Default');
+                }
+            }
         ));
     }
 }
