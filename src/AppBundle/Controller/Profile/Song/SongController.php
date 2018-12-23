@@ -51,6 +51,10 @@ class SongController extends Controller
             $em->persist($song);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                'Vous avez bien modifié votre musique');
+
         }
 
         return $this->render('profile/song/edit_song.html.twig', array(

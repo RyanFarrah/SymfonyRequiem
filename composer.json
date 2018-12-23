@@ -49,11 +49,9 @@
         "post-update-cmd": [
             "@symfony-scripts"
         ],
-        "init-test": [
-            "php bin/console doctrine:database:drop --env=test --force",
-            "php bin/console doctrine:database:create --env=test",
-            "php bin/console doctrine:schema:create --env=test",
-            "php bin/console doctrine:database:import --env=test app/shared/sql/test/user.sql"
+        "create-database-test": [
+            "php bin/console doctrine:database:drop --env=test --force --if-exists",
+            "php bin/console doctrine:database:create --env=test"
         ],
         "test": "./vendor/bin/simple-phpunit"
     },
