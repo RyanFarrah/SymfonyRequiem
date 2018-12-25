@@ -27,7 +27,9 @@ class FileHandler implements FileHandlerInterface
      */
     public function removeFile($path)
     {
-
+        if(!unlink($path)) {
+            throw new \Exception('Le fichier n\' a pas pu être supprimé');
+        }
     }
 
     /**

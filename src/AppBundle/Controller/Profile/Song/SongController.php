@@ -94,4 +94,22 @@ class SongController extends Controller
             'form' => $form
         ));
     }
+
+    /**
+     * @Route("/profile/remove/{id}", name="remove_song")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Song $song
+     * @param FileAudioHandler $fileAudioHandler
+     * @return void
+    */
+    public function removeAction(Request $request, EntityManagerInterface $em, Song $song, FileAudioHandler $fileAudioHandler)
+    {
+        $fileAudioHandler->removeSongEntityRelatedFiles($song);
+
+        $em->remove($song);
+        $em->flush();
+
+        return $this->redirectToRoute('profile');
+    }
 }

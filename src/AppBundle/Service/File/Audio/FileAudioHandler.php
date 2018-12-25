@@ -57,12 +57,26 @@ class FileAudioHandler extends FileHandler
         }
     }
 
-    public function removeAudioFile(Song $song)
+    protected function removeAudioFile(Song $song)
     {
-        $song->getAudioFile();
+        $audioFilePath = $this->audioDirectory . Song::AUDIOFILEPATH . $song->getAudioFile();
 
-        if (!unlink($this->audioDirectory . Song::AUDIOFILEPATH . $song->getAudioFile)) {
-            throw new \Exception('Un fichier n\'a pas pu être supprimé');
+        $this->removeFile($audioFilePath);
+    }
+
+    protected function removeCoverFile(Song $song)
+    {
+        $audioFilePath = $this->audioDirectory . Song::COVERFILEPATH . $song->getCover();
+
+        $this->removeFile($audioFilePath);
+    }
+
+    public function removeSongEntityRelatedFiles(Song $song)
+    {
+        $this->removeAudioFile($song);
+
+        if ($song->getCover()) {
+            $this->removeCoverFile($song);
         }
     }
 }

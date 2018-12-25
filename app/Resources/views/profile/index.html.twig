@@ -34,6 +34,9 @@
                     <a href="{{ path('edit_song', {'id': song.id}) }}">
                         Editer la chanson
                     </a>
+                    <a href="{{ path('remove_song', {'id': song.id}) }}">
+                        Supprimer la chanson
+                    </a>
                 </div>
                 {% endfor %}
 
