@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
 use AppBundle\Form\General\Handler\HandlerActionsInterface;
 use AppBundle\Form\Song\Type\NewSongType;
-use AppBundle\Service\FileHandler;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use AppBundle\Service\File\Audio\FileAudioHandler;
 
 final class NewSongHandler implements HandlerTypeInterface, ActionSubscriberInterface, HandlerActionsInterface
 {
@@ -25,19 +25,19 @@ final class NewSongHandler implements HandlerTypeInterface, ActionSubscriberInte
     protected $em;
 
     /**
-     * @var FileHandler
+     * @var FileAudioHandler
      */
-    protected $fileHandler;
+    protected $fileAudioHandler;
 
     /**
      * @var TokenStorageInterface
      */
     protected $token;
 
-    public function __construct(EntityManagerInterface $em, FileHandler $fileHandler, TokenStorageInterface $token)
+    public function __construct(EntityManagerInterface $em, FileAudioHandler $fileAudioHandler, TokenStorageInterface $token)
     {
         $this->em = $em;
-        $this->fileHandler = $fileHandler;
+        $this->fileAudioHandler = $fileAudioHandler;
         $this->token = $token;
     }
 
@@ -66,8 +66,8 @@ final class NewSongHandler implements HandlerTypeInterface, ActionSubscriberInte
      */
     public function onSuccess($data, FormInterface $form, Request $request) 
     {
-        $audioFileName = $this->fileHandler->newAudioFile($data);
-        $coverFileName = $this->fileHandler->getCoverFile($data, $audioFileName);
+        $audioFileName = $this->fileAudioHandler->newAudioFile($data);
+        $coverFileName = $this->fileAudioHandler->getCoverFile($data, $audioFileName);
 
         $now = new \DateTime();
 

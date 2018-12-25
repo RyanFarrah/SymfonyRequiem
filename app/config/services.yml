@@ -29,7 +29,7 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
-    AppBundle\Service\FileHandler:
+    AppBundle\Service\File\Audio\FileAudioHandler:
         arguments: 
             $audioDirectory: '%audio_directory%'
 
@@ -45,7 +45,7 @@ services:
         class: AppBundle\Form\Song\Handler\NewSongHandler
         arguments:
             - "@doctrine.orm.entity_manager"
-            - AppBundle\Service\FileHandler
+            - AppBundle\Service\File\Audio\FileAudioHandler
             - "@security.token_storage"
         tags:
             - { name: form.handler }

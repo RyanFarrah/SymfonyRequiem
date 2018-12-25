@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Profile\Song;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use AppBundle\Service\FileHandler;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +13,7 @@ use AppBundle\Entity\Song;
 use AppBundle\Form\Song\Type\EditSongType;
 use AppBundle\Form\Song\Type\NewSongType;
 use AppBundle\Form\Song\Handler\NewSongHandler;
+use AppBundle\Service\File\Audio\FileAudioHandler;
 
 class SongController extends Controller
 {
@@ -22,9 +22,9 @@ class SongController extends Controller
      * @param Request
      * @param EntityManagerInterface
      * @param Song
-     * @param FileHandler
+     * @param FileAudioHandler
      */
-    public function editAction(Request $request, EntityManagerInterface $em, Song $song, FileHandler $fileHandler)
+    public function editAction(Request $request, EntityManagerInterface $em, Song $song, FileAudioHandler $fileAudioHandler)
     {
 
         $audioNameFile = $song->getAudioFile();
@@ -43,7 +43,7 @@ class SongController extends Controller
 
             if($song->getAudioFile() !== null) {
                 unlink($audioPath . $song::AUDIOFILEPATH . $audioNameFile);
-                $audioNameFile = $fileHandler->newAudioFile($song);
+                $audioNameFile = $fileAudioHandler->newAudioFile($song);
             }
 
             $song->setAudioFile($audioNameFile);
@@ -66,10 +66,10 @@ class SongController extends Controller
      * @Route("/profile/new", name="new_song")
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param FileHandler $fileHandler
+     * @param FileAudioHandler $fileAudioHandler
      * @return void
     */
-    public function newAction(Request $request, EntityManagerInterface $em, FileHandler $fileHandler)
+    public function newAction(Request $request, EntityManagerInterface $em, FileAudioHandler $fileAudioHandler)
     {
         $repository = $this->getDoctrine()->getRepository(Song::class);
 

@@ -1,9 +1,10 @@
 <?php
-namespace AppBundle\Service;
+namespace AppBundle\Service\File\Audio;
 
 use AppBundle\Entity\Song;
+use AppBundle\Service\File\General\FileHandler;
 
-class FileHandler
+class FileAudioHandler extends FileHandler
 {
 
     private $audioDirectory;
@@ -23,14 +24,9 @@ class FileHandler
         /** @var Symfony\Component\HttpFoundation\File\UploadedFile $audioFile */
         $audioFile = $song->getAudioFile();
 
-        $audioFileName = $this->generateUniqueFileName().'.'.$audioFile->guessExtension();
+        $audioPath = $this->audioDirectory . $song::AUDIOFILEPATH;
 
-        $audioFile->move(
-            $this->audioDirectory . $song::AUDIOFILEPATH,
-            $audioFileName
-        );
-
-        return $audioFileName;
+        return $this->newFile($audioFile, $audioPath);
     }
 
     /**
@@ -61,11 +57,12 @@ class FileHandler
         }
     }
 
-    /**
-     * @return string
-     */
-    private function generateUniqueFileName()
+    public function removeAudioFile(Song $song)
     {
-        return md5(uniqid());
+        $song->getAudioFile();
+
+        if (!unlink($this->audioDirectory . Song::AUDIOFILEPATH . $song->getAudioFile)) {
+            throw new \Exception('Un fichier n\'a pas pu être supprimé');
+        }
     }
 }
