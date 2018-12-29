@@ -49,3 +49,12 @@ services:
             - "@security.token_storage"
         tags:
             - { name: form.handler }
+    
+    app.form_handler.song.edit:
+        class: AppBundle\Form\Song\Handler\EditSongHandler
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - AppBundle\Service\File\Audio\FileAudioHandler
+            - "@security.token_storage"
+        tags:
+            - { name: form.handler }

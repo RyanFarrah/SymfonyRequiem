@@ -4,6 +4,9 @@ namespace AppBundle\Service\File\Audio;
 use AppBundle\Entity\Song;
 use AppBundle\Service\File\General\FileHandler;
 
+/**
+ * This class is dependant on Song Entity
+ */
 class FileAudioHandler extends FileHandler
 {
 
@@ -19,7 +22,7 @@ class FileAudioHandler extends FileHandler
      * @param Song $song
      * @return string
      */
-    public function newAudioFile($song)
+    public function newAudioFile(Song $song)
     {
         /** @var Symfony\Component\HttpFoundation\File\UploadedFile $audioFile */
         $audioFile = $song->getAudioFile();

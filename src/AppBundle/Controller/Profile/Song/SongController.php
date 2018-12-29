@@ -14,6 +14,7 @@ use AppBundle\Form\Song\Type\EditSongType;
 use AppBundle\Form\Song\Type\NewSongType;
 use AppBundle\Form\Song\Handler\NewSongHandler;
 use AppBundle\Service\File\Audio\FileAudioHandler;
+use AppBundle\Form\Song\Handler\EditSongHandler;
 
 class SongController extends Controller
 {
@@ -26,39 +27,20 @@ class SongController extends Controller
      */
     public function editAction(Request $request, EntityManagerInterface $em, Song $song, FileAudioHandler $fileAudioHandler)
     {
-
-        $audioNameFile = $song->getAudioFile();
-
-        $audioPath = $this->getParameter('audio_directory');
-
         $song->setAudioFile(
             new File($this->getParameter('audio_directory') . $song::AUDIOFILEPATH . $song->getAudioFile()));
 
-        $form = $this->createForm(EditSongType::class, $song);
-        $form->handleRequest($request);
+        $handler = $this->get('hostnet.form_handler.factory')->create(EditSongHandler::class);
 
-        if ($form->isSubmitted() && $form->isValid()) { 
-
-            $song = $form->getData();
-
-            if($song->getAudioFile() !== null) {
-                unlink($audioPath . $song::AUDIOFILEPATH . $audioNameFile);
-                $audioNameFile = $fileAudioHandler->newAudioFile($song);
-            }
-
-            $song->setAudioFile($audioNameFile);
-
-            $em->persist($song);
-            $em->flush();
-
+        if($handler->handle($request, $song)) {
             $this->addFlash(
                 'notice',
-                'Vous avez bien modifié votre musique');
-
+                'Vous avez bien modifié votre musique'
+            );
         }
 
         return $this->render('profile/song/edit_song.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $handler->getForm()->createView(),
         ));
     }
 
@@ -109,6 +91,10 @@ class SongController extends Controller
 
         $em->remove($song);
         $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Votre musique a bien été supprimée');
 
         return $this->redirectToRoute('profile');
     }

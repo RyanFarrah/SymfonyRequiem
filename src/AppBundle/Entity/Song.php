@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormInterface;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Song
@@ -238,6 +239,18 @@ class Song
     public function setUpdatedAtValue()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    public function transformAudioFileToModelData()
+    {
+        if(is_string($this->audioFile)) {
+            return $this;
+        } elseif($this->audioFile instanceof File) {
+            $this->audioFile = $this->audioFile->getFileName();
+            return $this;
+        } else {
+            throw new \Exception('Les données dans la propriété audioFileName ne peuvent pas être traitées');
+        }
     }
 }
 

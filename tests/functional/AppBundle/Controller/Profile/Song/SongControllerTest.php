@@ -31,10 +31,14 @@ class SongControllerTest extends WebTestCase
 
     protected function setUp()
     {
-        $this->client = $client = static::createClient(array(), array(
+        $client = $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'username',
             'PHP_AUTH_PW'   => 'password',
         ));
+
+        $client->followRedirects(true);
+
+        $this->client = $client;
 
         $container = $client->getContainer();
 
@@ -146,6 +150,26 @@ class SongControllerTest extends WebTestCase
                 $this->stringContains('Vous avez bien modifié votre musique')
             )
         );
+    }
+
+    public function testRemoveSongSuccess()
+    {
+        $client = $this->client;
+
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('name');
+
+        $this->assertNotNull($song);
+
+        $crawler = $client->request('GET', '/profile/remove/' . $song->getId());
+
+        $response = $client->getResponse();
+
+        $this->assertContains('Votre musique a bien été supprimée', $response->getContent());
+
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('name');
+
+        $this->assertNull($song);
+
     }
 
     public static function tearDownAfterClass()
