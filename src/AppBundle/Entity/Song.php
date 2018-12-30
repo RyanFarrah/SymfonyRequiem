@@ -60,9 +60,15 @@ class Song
 
     /**
      * Nom du fichier de cover
-     *@var string
+     * @var string
      *
-     *@ORM\Column(name="cover", nullable=true, type="string", length=255)
+     * @ORM\Column(name="cover", nullable=true, type="string", length=255)
+     * @Assert\File(
+     *  mimeTypes={"image/jpeg", "image/png"},
+     *  mimeTypesMessage="Veuillez télécharger un fichier dans un format valide",
+     *  maxSize = "4M",
+     *  maxSizeMessage="Le fichier ne doit pas dépasser 4M"
+     * )
     */
     private $cover;
 

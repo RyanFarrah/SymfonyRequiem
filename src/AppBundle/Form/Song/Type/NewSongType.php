@@ -27,6 +27,10 @@ class NewSongType extends AbstractType
             ->add('audioName', TextType::class, array('label' => 'Choisissez son nom'))
             ->add('audioFile', FileType::class, array(
                 'label' => 'Télécharger un fichier audio'))
+            ->add('cover', FileType::class, array(
+                'label' => 'Télécharger le cover de votre musique',
+                'required' => false
+            ))
             ->add('save', SubmitType::class);
     }
 

@@ -38,6 +38,16 @@ class FileAudioHandler extends FileHandler
         return $this->newFile($audioFile, $audioPath);
     }
 
+    public function newCoverFile(Song $song)
+    {
+        /** @var Symfony\Component\HttpFoundation\File\UploadedFile $audioFile */
+        $cover = $song->getCover();
+
+        $coverPath = $this->audioDirectory . $song::COVERFILEPATH;
+        
+        return $this->newFile($cover, $coverPath);
+    }
+
     /**
      * Get the cover id3 of the audio file
      *

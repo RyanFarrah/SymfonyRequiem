@@ -28,6 +28,10 @@ class EditSongType extends AbstractType
             ->add('audioFile', FileType::class, array(
                 'label' => 'Changer de fichier audio',
                 'required' => false))
+            ->add('cover', FileType::class, array(
+                'label' => 'Télécharger le cover de votre musique',
+                'required' => false
+            ))
             ->add('save', SubmitType::class);
     }
 

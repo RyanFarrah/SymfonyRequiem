@@ -30,6 +30,11 @@ class SongController extends Controller
         $song->setAudioFile(
             new File($this->getParameter('audio_directory') . $song::AUDIOFILEPATH . $song->getAudioFile()));
 
+        if($song->getCover()) {
+            $song->setCover(
+                new File($this->getParameter('audio_directory') . $song::COVERFILEPATH . $song->getCover()));
+        }
+
         $handler = $this->get('hostnet.form_handler.factory')->create(EditSongHandler::class);
 
         if($handler->handle($request, $song)) {

@@ -68,7 +68,11 @@ final class NewSongHandler implements HandlerTypeInterface, ActionSubscriberInte
     public function onSuccess($data, FormInterface $form, Request $request) 
     {
         $audioFileName = $this->fileAudioHandler->newAudioFile($data);
-        $coverFileName = $this->fileAudioHandler->getCoverFile($data, $audioFileName);
+        if($data->getCover()) {
+            $coverFileName = $this->fileAudioHandler->newCoverFile($data);
+        } else {
+            $coverFileName = $this->fileAudioHandler->getCoverFile($data, $audioFileName);
+        }
 
         $now = new \DateTime();
 

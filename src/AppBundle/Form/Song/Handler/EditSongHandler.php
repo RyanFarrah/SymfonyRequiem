@@ -83,7 +83,24 @@ final class EditSongHandler implements HandlerTypeInterface, ActionSubscriberInt
             $data->setCover(null);
             $audioFileName = $this->fileAudioHandler->newAudioFile($data);
             $data->setAudioFile($audioFileName);
+        } else {
+            $data->setAudioFile($this->songBeforeSubmit->getAudioFile());
         }  
+
+        if($data->getCover()) {
+            $coverFileName = $this->fileAudioHandler->newCoverFile($data);
+        } elseif(isset($audioFileName)) {
+            $coverFileName = $this->fileAudioHandler->getCoverFile($data, $audioFileName);
+        } else {
+            $coverFileName = null;
+        }
+
+        if($coverFileName) {
+            if($coverFileName instanceof ConstraintViolationList) {
+                $coverFileName = null;
+            }
+            $data->setCover($coverFileName);
+        }
 
         $this->em->persist($data);
         $this->em->flush();
