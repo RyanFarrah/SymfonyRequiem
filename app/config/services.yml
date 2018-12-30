@@ -31,7 +31,7 @@ services:
 
     AppBundle\Service\File\Audio\FileAudioHandler:
         arguments: 
-            $audioDirectory: '%audio_directory%'
+            - '%audio_directory%'
 
     app.form_handler.user:
         class: AppBundle\Form\User\UserHandler

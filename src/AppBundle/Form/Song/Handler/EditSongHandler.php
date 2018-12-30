@@ -80,6 +80,7 @@ final class EditSongHandler implements HandlerTypeInterface, ActionSubscriberInt
     {
         if($data->getAudioFile()) {
             $this->fileAudioHandler->removeSongEntityRelatedFiles($this->songBeforeSubmit);
+            $data->setCover(null);
             $audioFileName = $this->fileAudioHandler->newAudioFile($data);
             $data->setAudioFile($audioFileName);
         }  
