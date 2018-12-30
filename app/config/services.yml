@@ -32,6 +32,7 @@ services:
     AppBundle\Service\File\Audio\FileAudioHandler:
         arguments: 
             - '%audio_directory%'
+            - '@validator'
 
     app.form_handler.user:
         class: AppBundle\Form\User\UserHandler

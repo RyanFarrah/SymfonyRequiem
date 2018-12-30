@@ -3,6 +3,8 @@ namespace AppBundle\Service\File\Audio;
 
 use AppBundle\Entity\Song;
 use AppBundle\Service\File\General\FileHandler;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This class is dependant on Song Entity
@@ -10,9 +12,13 @@ use AppBundle\Service\File\General\FileHandler;
 class FileAudioHandler extends FileHandler
 {
 
-    private $audioDirectory;
+    protected $audioDirectory;
 
-    public function __construct($audioDirectory) {
+    protected $validator;
+
+    public function __construct($audioDirectory, ValidatorInterface $validator) 
+    {
+        $this->validator = $validator;
         $this->audioDirectory = $audioDirectory;
     }
 
@@ -37,7 +43,7 @@ class FileAudioHandler extends FileHandler
      *
      * @param Song $song
      * @param string $audioFileName
-     * @return string
+     * @return string|ConstraintViolationList
      */
     public function getCoverFile(Song $song, string $audioFileName) {
 
@@ -52,6 +58,17 @@ class FileAudioHandler extends FileHandler
             $coverFile = $this->audioDirectory . $song::COVERFILEPATH . $coverFileName;
 
             file_put_contents($coverFile, $ThisFileInfo['id3v2']['APIC'][0]['data']);
+
+            $coverConstraint = new Assert\File(array('maxSize' => "4M",
+            'mimeTypes' => ["image/jpeg", "image/png"]
+            ));
+
+            $constraintViolationList = $this->validator->validate($coverFile, $coverConstraint);
+
+            if($constraintViolationList->count() > 0) {
+                $this->removeFile($coverFile);
+                return $constraintViolationList;
+            }
 
             return $coverFileName;
 

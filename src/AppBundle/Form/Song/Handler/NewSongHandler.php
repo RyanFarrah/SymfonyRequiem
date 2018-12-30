@@ -15,6 +15,7 @@ use AppBundle\Form\General\Handler\HandlerActionsInterface;
 use AppBundle\Form\Song\Type\NewSongType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use AppBundle\Service\File\Audio\FileAudioHandler;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 final class NewSongHandler implements HandlerTypeInterface, ActionSubscriberInterface, HandlerActionsInterface
 {
@@ -74,6 +75,9 @@ final class NewSongHandler implements HandlerTypeInterface, ActionSubscriberInte
         $data->setAudioFile($audioFileName);
         $data->setUser($this->token->getToken()->getUser());
         if($coverFileName) {
+            if($coverFileName instanceof ConstraintViolationList) {
+                $coverFileName = null;
+            }
             $data->setCover($coverFileName);
         }
         
