@@ -59,7 +59,7 @@ class SongControllerTest extends WebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['new_song[audioFile]']->upload($this->audioUploadsDirectory . 'about_a_girl.mp3');
+        $form['new_song[audioFile]']->upload($this->audioUploadsDirectory . Song::AUDIOFILEPATH . 'about_a_girl.mp3');
 
         $form['new_song[audioName]'] = 'name';
 
@@ -112,7 +112,7 @@ class SongControllerTest extends WebTestCase
 
         $form = $buttonCrawlerNode->form();
 
-        $form['edit_song[audioFile]']->upload($this->audioUploadsDirectory . 'about_a_girl.mp3');
+        $form['edit_song[audioFile]']->upload($this->audioUploadsDirectory . Song::AUDIOFILEPATH . 'about_a_girl.mp3');
 
         $form['edit_song[audioName]'] = 'name';
 

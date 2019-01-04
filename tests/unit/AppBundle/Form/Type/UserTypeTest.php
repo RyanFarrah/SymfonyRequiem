@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Form\Type;
+namespace tests\functional\AppBundle\Form\Type;
 
 use AppBundle\Form\User\UserType;
 use AppBundle\Entity\User;

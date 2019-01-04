@@ -105,7 +105,7 @@ class Song
     /**
      * Set audioFile
      *
-     * @param string $audioFile
+     * @param File|string $audioFile
      *
      * @return Song
      */
