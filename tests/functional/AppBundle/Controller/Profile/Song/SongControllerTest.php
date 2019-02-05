@@ -61,13 +61,67 @@ class SongControllerTest extends WebTestCase
 
         $form['new_song[audioFile]']->upload($this->audioUploadsDirectory . Song::AUDIOFILEPATH . 'about_a_girl.mp3');
 
-        $form['new_song[audioName]'] = 'name';
+        $form['new_song[audioName]'] = 'song';
 
         $client->submit($form);
 
         $response = $client->getResponse();
 
         $this->assertContains('Vous avez bien enregistré votre musique', $response->getContent());
+        
+    }
+
+    public function testNewSongWithCoverSuccess()
+    {
+        $client = $this->client;
+
+        $crawler = $client->request('GET', '/profile/new');
+
+        $buttonCrawlerNode = $crawler->selectButton('new_song_save');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['new_song[audioFile]']->upload($this->audioUploadsDirectory . Song::AUDIOFILEPATH . 'dumb.mp3');
+
+        $form['new_song[audioName]'] = 'song_with_cover';
+
+        $client->submit($form);
+
+        $response = $client->getResponse();
+
+        $this->assertContains('Vous avez bien enregistré votre musique', $response->getContent());
+
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('song_with_cover');
+
+        $this->assertNotNull($song->getCover());
+        
+    }
+
+    public function testNewSongAndCoverSuccess()
+    {
+        $client = $this->client;
+
+        $crawler = $client->request('GET', '/profile/new');
+
+        $buttonCrawlerNode = $crawler->selectButton('new_song_save');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['new_song[audioFile]']->upload($this->audioUploadsDirectory . Song::AUDIOFILEPATH . 'about_a_girl.mp3');
+
+        $form['new_song[cover]']->upload($this->audioUploadsDirectory . Song::COVERFILEPATH . 'cover.jpg');
+
+        $form['new_song[audioName]'] = 'song_and_cover';
+
+        $client->submit($form);
+
+        $response = $client->getResponse();
+
+        $this->assertContains('Vous avez bien enregistré votre musique', $response->getContent());
+
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('song_and_cover');
+
+        $this->assertNotNull($song->getCover());
         
     }
 
@@ -84,7 +138,7 @@ class SongControllerTest extends WebTestCase
 
         $form['new_song[audioFile]']->upload($this->audioUploadsDirectory . 'error/' .  'error');
 
-        $form['new_song[audioName]'] = 'sdsd';
+        $form['new_song[audioName]'] = 'error';
 
         $client->submit($form);
 
@@ -104,7 +158,7 @@ class SongControllerTest extends WebTestCase
 
         $client = $this->client;
 
-        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('name');
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('song');
 
         $crawler = $client->request('GET', '/profile/edit/' . $song->getId());
 
@@ -114,7 +168,7 @@ class SongControllerTest extends WebTestCase
 
         $form['edit_song[audioFile]']->upload($this->audioUploadsDirectory . Song::AUDIOFILEPATH . 'about_a_girl.mp3');
 
-        $form['edit_song[audioName]'] = 'name';
+        $form['edit_song[audioName]'] = 'song';
 
         $client->submit($form);
 
@@ -128,7 +182,7 @@ class SongControllerTest extends WebTestCase
 
         $client = $this->client;
 
-        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('name');
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('song');
 
         $crawler = $client->request('GET', '/profile/edit/' . $song->getId());
 
@@ -156,7 +210,7 @@ class SongControllerTest extends WebTestCase
     {
         $client = $this->client;
 
-        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('name');
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('song');
 
         $this->assertNotNull($song);
 
@@ -166,7 +220,7 @@ class SongControllerTest extends WebTestCase
 
         $this->assertContains('Votre musique a bien été supprimée', $response->getContent());
 
-        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('name');
+        $song = $this->entityManager->getRepository(Song::class)->findOneByAudioName('song');
 
         $this->assertNull($song);
 
